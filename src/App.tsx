@@ -8,11 +8,10 @@ export type TasksType = {
   isDone: boolean;
 };
 
+export type filterType = "all" | "active" | "complete";
+
 export const App = () => {
-
-type filterType = "all" | "active" | "complete"
-
-const [filter, setFilter] = useState<filterType>("all")
+  const [filter, setFilter] = useState<filterType>("all");
 
   const [tasks, setTasks] = useState<TasksType[]>([
     { id: 1, title: "HTML&CSS", isDone: true },
@@ -25,19 +24,19 @@ const [filter, setFilter] = useState<filterType>("all")
     setTasks(filteredTasks);
   };
 
-const changeFilter = (filterValue: filterType) => {
-  setFilter(filterValue)
-}
+  const changeFilter = (filterValue: filterType) => {
+    setFilter(filterValue);
+  };
 
-  let filteredTasks = tasks
+  let filteredTasks = tasks;
   if (filter === "active") {
     filteredTasks = tasks.filter((t) => !t.isDone);
   }
   if (filter === "complete") {
-    filteredTasks = tasks.filter((t) => t.isDone)
+    filteredTasks = tasks.filter((t) => t.isDone);
   }
 
-    return (
+  return (
     <div className="app">
       <TodoListItem
         title="What to learn"

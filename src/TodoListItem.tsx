@@ -1,4 +1,4 @@
-import { TasksType } from "./App";
+import { filterType, TasksType } from "./App";
 import { Button } from "./Button";
 
 type TodoListItemPropsType = {
@@ -6,7 +6,7 @@ type TodoListItemPropsType = {
   tasks: TasksType[];
   date?: string;
   deleteTask: (taskId: number) => void;
-  changeFilter: (filterValue: filterType) => void
+  changeFilter: (filterValue: filterType) => void;
 };
 
 export const TodoListItem = ({
@@ -39,9 +39,9 @@ export const TodoListItem = ({
         )}
       </ul>
       <div>
-        <Button title="All" onClick={() => changeFilter("all")}/>
-        <Button title="Active" onClick={() => changeFilter("active")}/>
-        <Button title="Completed" onClick={() => changeFilter("complete")}/>
+        <Button title="All" onClick={() => changeFilter("all")} />
+        <Button title="Active" onClick={() => changeFilter("active")} />
+        <Button title="Completed" onClick={() => changeFilter("complete")} />
       </div>
       <div>{date ? `Creation date: ${date}` : ""}</div>
     </div>
