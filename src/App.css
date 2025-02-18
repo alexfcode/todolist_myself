@@ -5,4 +5,8 @@
 
 .app > div {
   margin-right: 50px;
+  background-color: #70f149;
+  border-radius: 3%;
+  padding: 10px;
 }
+
