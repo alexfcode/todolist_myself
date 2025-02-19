@@ -10,6 +10,7 @@ type TodoListItemPropsType = {
   changeFilter: (filterValue: filterType) => void;
   createTask: (title: string) => void;
   changeTaskStatus: (taskId: string, isDone: boolean) => void;
+  filter: string;
 };
 
 export const TodoListItem = ({
@@ -20,16 +21,23 @@ export const TodoListItem = ({
   changeFilter,
   createTask,
   changeTaskStatus,
-}: TodoListItemPropsType) => {
+  filter,
+  }: TodoListItemPropsType) => {
   const [taskTitle, setTaskTitle] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   const createTaskHandler = () => {
-    createTask(taskTitle);
+    if (taskTitle.trim()) {
+      createTask(taskTitle.trim());
+    } else {
+      setError("Title is empty!")
+    }
     setTaskTitle("");
   };
 
   const changeTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setTaskTitle(event.currentTarget.value);
+    setError(null)
   };
 
   const createTaskOnEnterHandler = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -43,11 +51,13 @@ export const TodoListItem = ({
       <h3>{title}</h3>
       <div>
         <input
+        className={error ? "error" : ""}
           value={taskTitle}
           onChange={changeTaskTitleHandler}
           onKeyDown={createTaskOnEnterHandler}
         />
         <Button title="+" onClick={createTaskHandler} />
+        {error && <div className={"error-message"}>{error}</div>  }
       </div>
       <ul>
         {tasks.length > 0 ? (
@@ -64,7 +74,7 @@ export const TodoListItem = ({
             };
 
             return (
-              <li key={t.id}>
+              <li key={t.id} className={t.isDone ? "is-done" : ""}>
                 <Button title="x" onClick={deleteTaskHandler} />
                 <input
                   type="checkbox"
@@ -80,9 +90,9 @@ export const TodoListItem = ({
         )}
       </ul>
       <div>
-        <Button title="All" onClick={() => changeFilter("all")} />
-        <Button title="Active" onClick={() => changeFilter("active")} />
-        <Button title="Completed" onClick={() => changeFilter("complete")} />
+        <Button className={filter === 'all' ? 'active-filter' : ""} title="All" onClick={() => changeFilter("all")} />
+        <Button className={filter === 'active' ? 'active-filter' : ""} title="Active" onClick={() => changeFilter("active")} />
+        <Button className={filter === 'complete' ? 'active-filter' : ""} title="Completed" onClick={() => changeFilter("complete")} />
       </div>
       <div>{date ? `Creation date: ${date}` : ""}</div>
     </div>
