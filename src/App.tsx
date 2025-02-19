@@ -20,15 +20,15 @@ export const App = () => {
     { id: v1(), title: "React", isDone: false },
   ]);
 
-const createTask = (title: string) => {
-  const newTask = {
-    id: v1(),
-    title,
-    isDone: false
-  }
-  const newTasks = [newTask, ...tasks]
-  setTasks(newTasks)
-}
+  const createTask = (title: string) => {
+    const newTask = {
+      id: v1(),
+      title,
+      isDone: false,
+    };
+    const newTasks = [newTask, ...tasks];
+    setTasks(newTasks);
+  };
 
   const deleteTask = (tasksId: string) => {
     const filteredTasks = tasks.filter((t) => t.id !== tasksId);
@@ -37,6 +37,14 @@ const createTask = (title: string) => {
 
   const changeFilter = (filterValue: filterType) => {
     setFilter(filterValue);
+  };
+
+  const changeTaskStatus = (taskId: string, isDone: boolean) => {
+    const task = tasks.find((t) => t.id === taskId);
+    if (task) {
+      task.isDone = isDone;
+      setTasks([...tasks]);
+    }
   };
 
   let filteredTasks = tasks;
@@ -55,6 +63,7 @@ const createTask = (title: string) => {
         deleteTask={deleteTask}
         changeFilter={changeFilter}
         createTask={createTask}
+        changeTaskStatus={changeTaskStatus}
       />
     </div>
   );
