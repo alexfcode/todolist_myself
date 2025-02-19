@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useState } from "react";
 import { filterType, TasksType } from "./App";
 import { Button } from "./Button";
 
@@ -8,7 +8,7 @@ type TodoListItemPropsType = {
   date?: string;
   deleteTask: (taskId: string) => void;
   changeFilter: (filterValue: filterType) => void;
-  createTask: (title: string) => void
+  createTask: (title: string) => void;
 };
 
 export const TodoListItem = ({
@@ -19,26 +19,43 @@ export const TodoListItem = ({
   changeFilter,
   createTask,
 }: TodoListItemPropsType) => {
+  const [taskTitle, setTaskTitle] = useState("");
 
-  const [taskTitle, setTaskTitle] = useState("")
+  const createTaskHandler = () => {
+    createTask(taskTitle);
+    setTaskTitle("");
+  };
+
+  const changeTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    setTaskTitle(event.currentTarget.value);
+  };
+
+  const createTaskOnEnterHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      createTaskHandler();
+    }
+  };
 
   return (
     <div>
       <h3>{title}</h3>
       <div>
-        <input value={taskTitle} onChange={event => 
-          setTaskTitle(event.currentTarget.value)
-        }/>
-        <Button title="+" onClick={() => {createTask(taskTitle)
-          setTaskTitle("")
-        }}/>
+        <input
+          value={taskTitle}
+          onChange={changeTaskTitleHandler}
+          onKeyDown={createTaskOnEnterHandler}
+        />
+        <Button title="+" onClick={createTaskHandler} />
       </div>
       <ul>
         {tasks.length > 0 ? (
           tasks.map((t) => {
+            const deleteTaskHandler = () => {
+              deleteTask(t.id);
+            };
             return (
               <li key={t.id}>
-                <Button title="x" onClick={() => deleteTask(t.id)} />
+                <Button title="x" onClick={deleteTaskHandler} />
                 <input type="checkbox" checked={t.isDone} />{" "}
                 <span>{t.title}</span>
               </li>
