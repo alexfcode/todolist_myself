@@ -1,6 +1,6 @@
+import { useRef } from "react";
 import { filterType, TasksType } from "./App";
 import { Button } from "./Button";
-
 
 type TodoListItemPropsType = {
   title: string;
@@ -8,7 +8,7 @@ type TodoListItemPropsType = {
   date?: string;
   deleteTask: (taskId: string) => void;
   changeFilter: (filterValue: filterType) => void;
-  createTask: () => void
+  createTask: (title: string) => void
 };
 
 export const TodoListItem = ({
@@ -19,12 +19,20 @@ export const TodoListItem = ({
   changeFilter,
   createTask,
 }: TodoListItemPropsType) => {
+
+  const inputRef = useRef<HTMLInputElement>(null)
+
   return (
     <div>
       <h3>{title}</h3>
       <div>
-        <input />
-        <Button title="+" onClick={createTask}/>
+        <input ref={inputRef}/>
+        <Button title="+" onClick={() => {
+          if (inputRef.current) {
+            createTask(inputRef.current.value)
+            inputRef.current.value=''
+          }
+        }}/>
       </div>
       <ul>
         {tasks.length > 0 ? (

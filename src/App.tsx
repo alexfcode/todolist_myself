@@ -20,10 +20,10 @@ export const App = () => {
     { id: v1(), title: "React", isDone: false },
   ]);
 
-const createTask = () => {
+const createTask = (title: string) => {
   const newTask = {
     id: v1(),
-    title: "New Task",
+    title,
     isDone: false
   }
   const newTasks = [newTask, ...tasks]
